@@ -3,18 +3,17 @@ from pulsar import provider
 icon = provider.ADDON.getAddonInfo('icon')
 
 def search(query):
-	url_search = "http://getstrike.net/api/torrents/search/?q=%s" % (query)
+	url_search = "https://getstrike.net/api/v2/torrents/search/?phrase=%s" % (query)
 	provider.log.info(url_search)
 	response = provider.GET(url_search)
 	results=[]
 	if str(response.data) != '':
 		items = provider.parse_json(response.data)
-		nbrTorrents = items[0]['results']
+		nbrTorrents = items['results']
 		for torrent in range(0, nbrTorrents):
-			hash = items[1][torrent]['torrent_hash']
-			name = items[1][torrent]['torrent_title']
-			link = items[1][torrent]['download_link']
-			magnet = 'magnet:?xt=urn:btih:%s' % (hash)
+			hash = items['torrents'][torrent]['torrent_hash']
+			name = items['torrents'][torrent]['torrent_title']
+			magnet = items['torrents'][torrent]['magnet_uri']
 			results.append({'name': name, 'uri': magnet, 'info_hash': hash})
 	return results
 		
