@@ -1,6 +1,8 @@
 from pulsar import provider
 
+
 icon = provider.ADDON.getAddonInfo('icon')
+notificationTime = int(provider.get_setting('time_noti'))
 
 def search(query):
 	url_search = "https://getstrike.net/api/v2/torrents/search/?phrase=%s" % (query)
@@ -19,12 +21,14 @@ def search(query):
 		
 def search_episode(info):
 	title = info['title'].encode('utf-8') + ' S%02dE%02d' % (info['season'],info['episode'])
-	provider.notify(message='Searching: ' + title +'...', header=None, time=1500, image=icon)
+	if notificationTime > 0:
+		provider.notify(message='Searching: ' + title +'...', header=None, time=notificationTime, image=icon)
 	return search(title)
 
 def search_movie(info):
 	title = info['title'].encode('utf-8') + ' %s' % (info['year'])
-	provider.notify(message='Searching: ' + title +'...', header=None, time=1500, image=icon)
+	if notificationTime > 0:
+		provider.notify(message='Searching: ' + title +'...', header=None, time=notificationTime, image=icon)
 	return search(title)
 
 #This registers your module for use
