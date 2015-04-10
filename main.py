@@ -5,6 +5,7 @@ icon = provider.ADDON.getAddonInfo('icon')
 notificationTime = int(provider.get_setting('time_noti'))
 
 def search(query):
+	query = query.replace(' ', '%20')
 	url_search = "https://getstrike.net/api/v2/torrents/search/?phrase=%s" % (query)
 	provider.log.info(url_search)
 	response = provider.GET(url_search)
