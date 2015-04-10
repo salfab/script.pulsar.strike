@@ -9,7 +9,7 @@ def search(query):
 	provider.log.info(url_search)
 	response = provider.GET(url_search)
 	results=[]
-	if str(response.data) != '':
+	if response != (None, None):
 		items = provider.parse_json(response.data)
 		nbrTorrents = items['results']
 		for torrent in range(0, nbrTorrents):
